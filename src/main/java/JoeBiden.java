@@ -16,59 +16,117 @@ public class JoeBiden {
         Scanner scanner = new Scanner(System.in);
         System.out.println(getWelcomeBanner());
         while (true) {
+            try {
+                String input = scanner.nextLine();
 
-            String input = scanner.nextLine();
+                String[] parts = input.split(" ", 2);
+                String command = parts[0].toLowerCase();
+                switch (command) {
+                    case "bye":
+                        if (parts.length > 1) {
+                            throw new JoeBidenException(
+                                    "The bye command does not take any arguments."
+                            );
+                        }
+                        System.out.println(getGoodbyeBanner());
+                        scanner.close();
+                        return;
+                    case "list":
+                        if (parts.length > 1) {
+                            throw new JoeBidenException(
+                                    "The list command does not take any arguments."
+                            );
+                        }
+                        String output = "Here are the tasks in your list:\n";
+                        for (int i = 0; i < list.size(); i++) {
+                            output += (i + 1) + ". " + list.get(i) + "\n";
+                        }
+                        echo(output);
+                        break;
+                    case "mark": {
+                        if (parts.length < 2 || parts[1].isBlank()) {
+                            throw new JoeBidenException(
+                                    "Please specify a task number to mark."
+                            );
+                        }
 
-            String[] parts = input.split(" ", 2);
-            String command = parts[0].toLowerCase();
-            if(!(parts.length > 1)) {
+                        int number;
 
-            }
-            switch(command){
-                case "bye":
-                    System.out.println(getGoodbyeBanner());
-                    scanner.close();
-                    return;
-                case "list":
-                    String output = "Here are the tasks in your list:\n";
-                    for (int i = 0; i < list.size(); i++) {
-                        output += (i + 1) + ". " + list.get(i) + "\n";
-                    }
-                    echo(output);
-                    break;
-                case "mark":
-                    if(parts.length > 1) {
-                        int number = Integer.parseInt(parts[1]);
+                        try {
+                            number = Integer.parseInt(parts[1]);
+                        } catch (NumberFormatException e) {
+                            throw new JoeBidenException(
+                                    "Task number must be a number."
+                            );
+                        }
+
+                        if (number < 1 || number > list.size()) {
+                            throw new JoeBidenException(
+                                    "That task number does not exist."
+                            );
+                        }
+
                         Task task = list.get(number - 1);
-
-                        System.out.println(LINE + "\n"
-                                + task.markDone()
-                                + LINE);
+                        echo(task.markDone());
+                        break;
                     }
-                    break;
-                case "unmark":
-                    if(parts.length > 1) {
-                        int number = Integer.parseInt(parts[1]);
+                    case "unmark": {
+                        if (parts.length < 2 || parts[1].isBlank()) {
+                            throw new JoeBidenException(
+                                    "Please specify a task number to unmark."
+                            );
+                        }
+
+                        int number;
+
+                        try {
+                            number = Integer.parseInt(parts[1]);
+                        } catch (NumberFormatException e) {
+                            throw new JoeBidenException(
+                                    "Task number must be a number."
+                            );
+                        }
+
+                        if (number < 1 || number > list.size()) {
+                            throw new JoeBidenException(
+                                    "That task number does not exist."
+                            );
+                        }
+
                         Task task = list.get(number - 1);
-                        System.out.println(LINE + "\n"
-                                + task.unmark()
-                                + LINE);
+                        echo(task.unmark());
+                        break;
                     }
-                    break;
-
-                case "todo":
-                    if (parts.length > 1) {
+                    case "todo": {
+                        if (parts.length < 2 || parts[1].isBlank()) {
+                            throw new JoeBidenException(
+                                    "The description of a todo cannot be empty."
+                            );
+                        }
                         Task task = new Todo(parts[1]);
                         list.add(task);
                         echo("Got it. I've added this task:\n"
                                 + task.toString()
                                 + "\nNow you have " + list.size() + " tasks in the list.");
-                    }
-                    break;
 
-                case "deadline":
-                    if (parts.length > 1) {
+                        break;
+                    }
+                    case "deadline": {
+                        if (parts.length < 2 || parts[1].isBlank()) {
+                            throw new JoeBidenException(
+                                    "The description of a deadline cannot be empty."
+                            );
+                        }
+
                         String[] deadlineParts = parts[1].split(" /by ", 2);
+
+                        if (deadlineParts.length < 2
+                                || deadlineParts[0].isBlank()
+                                || deadlineParts[1].isBlank()) {
+                            throw new JoeBidenException(
+                                    "Deadline must be in the format: deadline <task> /by <date>"
+                            );
+                        }
 
                         String description = deadlineParts[0];
                         String by = deadlineParts[1];
@@ -79,16 +137,36 @@ public class JoeBiden {
                         echo("Got it. I've added this task:\n"
                                 + task
                                 + "\nNow you have " + list.size() + " tasks in the list.");
+                        break;
                     }
-                    break;
+                    case "event": {
+                        if (parts.length < 2 || parts[1].isBlank()) {
+                            throw new JoeBidenException(
+                                    "The description of an event cannot be empty."
+                            );
+                        }
 
-                case "event":
-                    if (parts.length > 1) {
                         String[] fromParts = parts[1].split(" /from ", 2);
+
+                        if (fromParts.length < 2
+                                || fromParts[0].isBlank()
+                                || fromParts[1].isBlank()) {
+                            throw new JoeBidenException(
+                                    "Event must be in the format: event <task> /from <start> /to <end>"
+                            );
+                        }
 
                         String description = fromParts[0];
 
                         String[] toParts = fromParts[1].split(" /to ", 2);
+
+                        if (toParts.length < 2
+                                || toParts[0].isBlank()
+                                || toParts[1].isBlank()) {
+                            throw new JoeBidenException(
+                                    "Event must be in the format: event <task> /from <start> /to <end>"
+                            );
+                        }
 
                         String from = toParts[0];
                         String to = toParts[1];
@@ -99,16 +177,17 @@ public class JoeBiden {
                         echo("Got it. I've added this task:\n"
                                 + task
                                 + "\nNow you have " + list.size() + " tasks in the list.");
+                        break;
                     }
-                    break;
+                    default:
+                        throw new JoeBidenException(
+                                "Invalid input try again"
+                        );
 
-                default:
-                    if(parts.length > 1){
-                        Task task = new Task(parts[1]);
-                        list.add(task);
-                        echo("added: " + parts[1]);
-                    }
-                    break;
+                }
+            }catch (JoeBidenException e){
+                echo("ERROR! "+ e.getMessage());
+            }finally {
             }
 
 
