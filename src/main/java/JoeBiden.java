@@ -21,17 +21,20 @@ public class JoeBiden {
 
             String[] parts = input.split(" ", 2);
             String command = parts[0].toLowerCase();
+            if(!(parts.length > 1)) {
+
+            }
             switch(command){
                 case "bye":
                     System.out.println(getGoodbyeBanner());
                     scanner.close();
                     return;
                 case "list":
-                    System.out.println("Here are the tasks in your list:\n");
+                    String output = "Here are the tasks in your list:\n";
                     for (int i = 0; i < list.size(); i++) {
-                        System.out.println((i + 1) + ". " + list.get(i).toString());
+                        output += (i + 1) + ". " + list.get(i) + "\n";
                     }
-                    System.out.println(LINE);
+                    echo(output);
                     break;
                 case "mark":
                     if(parts.length > 1) {
@@ -50,6 +53,52 @@ public class JoeBiden {
                         System.out.println(LINE + "\n"
                                 + task.unmark()
                                 + LINE);
+                    }
+                    break;
+
+                case "todo":
+                    if (parts.length > 1) {
+                        Task task = new Todo(parts[1]);
+                        list.add(task);
+                        echo("Got it. I've added this task:\n"
+                                + task.toString()
+                                + "\nNow you have " + list.size() + " tasks in the list.");
+                    }
+                    break;
+
+                case "deadline":
+                    if (parts.length > 1) {
+                        String[] deadlineParts = parts[1].split(" /by ", 2);
+
+                        String description = deadlineParts[0];
+                        String by = deadlineParts[1];
+
+                        Task task = new Deadline(description, by);
+                        list.add(task);
+
+                        echo("Got it. I've added this task:\n"
+                                + task
+                                + "\nNow you have " + list.size() + " tasks in the list.");
+                    }
+                    break;
+
+                case "event":
+                    if (parts.length > 1) {
+                        String[] fromParts = parts[1].split(" /from ", 2);
+
+                        String description = fromParts[0];
+
+                        String[] toParts = fromParts[1].split(" /to ", 2);
+
+                        String from = toParts[0];
+                        String to = toParts[1];
+
+                        Task task = new Event(description, from, to);
+                        list.add(task);
+
+                        echo("Got it. I've added this task:\n"
+                                + task
+                                + "\nNow you have " + list.size() + " tasks in the list.");
                     }
                     break;
 
