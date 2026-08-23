@@ -97,6 +97,37 @@ public class JoeBiden {
                         echo(task.unmark());
                         break;
                     }
+                    case "delete": {
+                        if (parts.length < 2 || parts[1].isBlank()) {
+                            throw new JoeBidenException(
+                                    "Please specify a task number to delete."
+                            );
+                        }
+
+                        int number;
+
+                        try {
+                            number = Integer.parseInt(parts[1]);
+                        } catch (NumberFormatException e) {
+                            throw new JoeBidenException(
+                                    "Task number must be a number."
+                            );
+                        }
+
+                        if (number < 1 || number > list.size()) {
+                            throw new JoeBidenException(
+                                    "That task number does not exist."
+                            );
+                        }
+
+                        Task removedTask = list.remove(number - 1);
+
+                        echo("Noted. I've removed this task:\n"
+                                + removedTask
+                                + "\nNow you have " + list.size() + " tasks in the list.");
+
+                        break;
+                    }
                     case "todo": {
                         if (parts.length < 2 || parts[1].isBlank()) {
                             throw new JoeBidenException(
