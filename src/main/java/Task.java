@@ -7,7 +7,9 @@ public class Task {
         this.isDone = false;
     }
 
-
+    public boolean isDone() {
+        return isDone;
+    }
 
     public String markDone() {
         isDone = true;
@@ -20,6 +22,10 @@ public class Task {
         return "OK, I've marked this task as not done yet:\n"
                 + this.toString()
                 + "\n";
+    }
+
+    public String getName() {
+        return name;
     }
 
     @Override
