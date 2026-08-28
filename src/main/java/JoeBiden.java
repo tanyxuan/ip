@@ -1,3 +1,4 @@
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -15,6 +16,12 @@ public class JoeBiden {
 
         Scanner scanner = new Scanner(System.in);
         System.out.println(getWelcomeBanner());
+        try {
+            list.addAll(Storage.loadList());
+        } catch (IOException e) {
+            echo("Failed to load tasks.");
+        }
+
         while (true) {
             try {
                 String input = scanner.nextLine();
@@ -44,14 +51,12 @@ public class JoeBiden {
                         echo(output);
                         break;
                     case "mark": {
+                        int number;
                         if (parts.length < 2 || parts[1].isBlank()) {
                             throw new JoeBidenException(
                                     "Please specify a task number to mark."
                             );
                         }
-
-                        int number;
-
                         try {
                             number = Integer.parseInt(parts[1]);
                         } catch (NumberFormatException e) {
@@ -59,15 +64,18 @@ public class JoeBiden {
                                     "Task number must be a number."
                             );
                         }
-
                         if (number < 1 || number > list.size()) {
                             throw new JoeBidenException(
                                     "That task number does not exist."
                             );
                         }
-
                         Task task = list.get(number - 1);
                         echo(task.markDone());
+                        try {
+                            Storage.saveList(list);
+                        } catch (IOException e) {
+                            throw new JoeBidenException("Failed to save tasks.");
+                        }
                         break;
                     }
                     case "unmark": {
@@ -76,9 +84,7 @@ public class JoeBiden {
                                     "Please specify a task number to unmark."
                             );
                         }
-
                         int number;
-
                         try {
                             number = Integer.parseInt(parts[1]);
                         } catch (NumberFormatException e) {
@@ -86,15 +92,18 @@ public class JoeBiden {
                                     "Task number must be a number."
                             );
                         }
-
                         if (number < 1 || number > list.size()) {
                             throw new JoeBidenException(
                                     "That task number does not exist."
                             );
                         }
-
                         Task task = list.get(number - 1);
                         echo(task.unmark());
+                        try {
+                            Storage.saveList(list);
+                        } catch (IOException e) {
+                            throw new JoeBidenException("Failed to save tasks.");
+                        }
                         break;
                     }
                     case "delete": {
@@ -125,7 +134,11 @@ public class JoeBiden {
                         echo("Noted. I've removed this task:\n"
                                 + removedTask
                                 + "\nNow you have " + list.size() + " tasks in the list.");
-
+                        try {
+                            Storage.saveList(list);
+                        } catch (IOException e) {
+                            throw new JoeBidenException("Failed to save tasks.");
+                        }
                         break;
                     }
                     case "todo": {
@@ -139,7 +152,11 @@ public class JoeBiden {
                         echo("Got it. I've added this task:\n"
                                 + task.toString()
                                 + "\nNow you have " + list.size() + " tasks in the list.");
-
+                        try {
+                            Storage.saveList(list);
+                        } catch (IOException e) {
+                            throw new JoeBidenException("Failed to save tasks.");
+                        }
                         break;
                     }
                     case "deadline": {
@@ -168,6 +185,11 @@ public class JoeBiden {
                         echo("Got it. I've added this task:\n"
                                 + task
                                 + "\nNow you have " + list.size() + " tasks in the list.");
+                        try {
+                            Storage.saveList(list);
+                        } catch (IOException e) {
+                            throw new JoeBidenException("Failed to save tasks.");
+                        }
                         break;
                     }
                     case "event": {
@@ -208,6 +230,11 @@ public class JoeBiden {
                         echo("Got it. I've added this task:\n"
                                 + task
                                 + "\nNow you have " + list.size() + " tasks in the list.");
+                        try {
+                            Storage.saveList(list);
+                        } catch (IOException e) {
+                            throw new JoeBidenException("Failed to save tasks.");
+                        }
                         break;
                     }
                     default:

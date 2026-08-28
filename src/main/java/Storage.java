@@ -1,0 +1,94 @@
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.ArrayList;
+
+public class Storage {
+    private static final Path FILE_PATH = Paths.get("src", "main", "data", "joebiden.txt");
+    public static void saveList(ArrayList<Task> list) throws IOException {
+        Files.createDirectories(FILE_PATH.getParent());
+
+        ArrayList<String> lines = new ArrayList<>();
+
+        for (Task task : list) {
+            String done = task.isDone() ? "1" : "0";
+
+            if (task instanceof Todo) {
+                lines.add("T | " + done + " | " + task.getName());
+
+            } else if (task instanceof Deadline deadline) {
+                lines.add("D | " + done + " | "
+                        + task.getName() + " | "
+                        + deadline.getBy());
+
+            } else if (task instanceof Event event) {
+                lines.add("E | " + done + " | "
+                        + task.getName() + " | "
+                        + event.getFrom() + " | "
+                        + event.getTo());
+            }
+        }
+
+        Files.write(FILE_PATH, lines);
+    }
+
+    public static ArrayList<Task> loadList() throws IOException {
+        ArrayList<Task> tasks = new ArrayList<>();
+
+        if (!Files.exists(FILE_PATH)) {
+            Files.createDirectories(FILE_PATH.getParent());
+            return tasks;
+        }
+
+        for (String line : Files.readAllLines(FILE_PATH)) {
+            if (line.isBlank()) {
+                continue;
+            }
+
+            String[] parts = line.split("\\s*\\|\\s*");
+
+            if (parts.length < 3) {
+                continue;
+            }
+
+            String type = parts[0];
+            boolean isDone = parts[1].equals("1");
+            String description = parts[2];
+
+            Task task;
+
+            switch (type) {
+                case "T":
+
+                    task = new Todo(description);
+                    break;
+
+                case "D":
+                    if (parts.length < 4) {
+                        continue;
+                    }
+                    task = new Deadline(description, parts[3]);
+                    break;
+
+                case "E":
+                    if (parts.length < 5) {
+                        continue;
+                    }
+                    task = new Event(description, parts[3], parts[4]);
+                    break;
+
+                default:
+                    continue;
+            }
+
+            if (isDone) {
+                task.markDone();
+            }
+
+            tasks.add(task);
+        }
+
+        return tasks;
+    }
+}
