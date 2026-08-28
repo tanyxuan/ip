@@ -2,6 +2,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 public class Storage {
@@ -68,14 +69,20 @@ public class Storage {
                     if (parts.length < 4) {
                         continue;
                     }
-                    task = new Deadline(description, parts[3]);
+
+                    LocalDateTime by = LocalDateTime.parse(parts[3]);
+                    task = new Deadline(description, by);
                     break;
 
                 case "E":
                     if (parts.length < 5) {
                         continue;
                     }
-                    task = new Event(description, parts[3], parts[4]);
+
+                    LocalDateTime from = LocalDateTime.parse(parts[3]);
+                    LocalDateTime to = LocalDateTime.parse(parts[4]);
+
+                    task = new Event(description, from, to);
                     break;
 
                 default:

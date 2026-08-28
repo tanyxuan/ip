@@ -1,4 +1,7 @@
 import java.io.IOException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -177,7 +180,17 @@ public class JoeBiden {
                         }
 
                         String description = deadlineParts[0];
-                        String by = deadlineParts[1];
+                        DateTimeFormatter inputFormat =
+                                DateTimeFormatter.ofPattern("yyyy-MM-dd HHmm");
+
+                        LocalDateTime by;
+                        try {
+                            by = LocalDateTime.parse(deadlineParts[1], inputFormat);
+                        } catch (DateTimeParseException e) {
+                            throw new JoeBidenException(
+                                    "Invalid date. Use format: yyyy-MM-dd HHmm"
+                            );
+                        }
 
                         Task task = new Deadline(description, by);
                         list.add(task);
@@ -221,8 +234,20 @@ public class JoeBiden {
                             );
                         }
 
-                        String from = toParts[0];
-                        String to = toParts[1];
+                        DateTimeFormatter inputFormat =
+                                DateTimeFormatter.ofPattern("yyyy-MM-dd HHmm");
+
+                        LocalDateTime from;
+                        LocalDateTime to;
+
+                        try {
+                            from = LocalDateTime.parse(toParts[0], inputFormat);
+                            to = LocalDateTime.parse(toParts[1], inputFormat);
+                        } catch (DateTimeParseException e) {
+                            throw new JoeBidenException(
+                                    "Invalid date. Use format: yyyy-MM-dd HHmm"
+                            );
+                        }
 
                         Task task = new Event(description, from, to);
                         list.add(task);
