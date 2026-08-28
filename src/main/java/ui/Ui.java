@@ -1,7 +1,9 @@
 package ui;
 
 import java.util.Scanner;
-
+/**
+ * Handles user input and output for the chatbot.
+ */
 public class Ui {
 
     private final Scanner scanner;

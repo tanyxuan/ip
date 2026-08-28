@@ -18,6 +18,12 @@ public class Storage {
     private static final Path FILE_PATH =
             Paths.get("src", "main", "data", "joebiden.txt");
 
+    /**
+     * Saves the given list of tasks to the data file.
+     *
+     * @param list List of tasks to save.
+     * @throws JoeBidenException If the tasks cannot be saved.
+     */
     public static void saveList(ArrayList<Task> list)
             throws JoeBidenException {
 
@@ -54,7 +60,12 @@ public class Storage {
             );
         }
     }
-
+    /**
+     * Loads previously saved tasks from the data file.
+     *
+     * @return List of tasks loaded from storage.
+     * @throws JoeBidenException If the tasks cannot be loaded.
+     */
     public static ArrayList<Task> loadList()
             throws JoeBidenException {
 

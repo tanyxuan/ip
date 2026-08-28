@@ -8,13 +8,26 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 
+/**
+ * Parses user input and converts command arguments into usable values and tasks.
+ */
 public class Parser {
-
+    /**
+     * Extracts the command from the user input.
+     *
+     * @param input Raw user input.
+     * @return Command word in lowercase.
+     */
     public static String getCommand(String input) {
         String[] parts = input.split(" ", 2);
         return parts[0].toLowerCase();
     }
-
+    /**
+     * Extracts the arguments from the user input.
+     *
+     * @param input Raw user input.
+     * @return Command arguments, or an empty string if none are provided.
+     */
     public static String getArguments(String input) {
         String[] parts = input.split(" ", 2);
 
@@ -25,6 +38,13 @@ public class Parser {
         return parts[1];
     }
 
+    /**
+     * Checks that a command does not contain any arguments.
+     *
+     * @param command Command being validated.
+     * @param arguments Arguments supplied with the command.
+     * @throws JoeBidenException If arguments are provided.
+     */
     public static void validateNoArguments(String command, String arguments)
             throws JoeBidenException {
 
@@ -34,7 +54,13 @@ public class Parser {
             );
         }
     }
-
+    /**
+     * Parses a task number from the given arguments.
+     *
+     * @param arguments Arguments containing the task number.
+     * @return Parsed task number.
+     * @throws JoeBidenException If the task number is missing or not numeric.
+     */
     public static int getTaskNumber(String arguments) throws JoeBidenException {
         if (arguments.isBlank()) {
             throw new JoeBidenException(
@@ -50,6 +76,13 @@ public class Parser {
             );
         }
     }
+    /**
+     * Parses event arguments and creates an Event.
+     *
+     * @param arguments Event description, start time, and end time.
+     * @return Event created from the arguments.
+     * @throws JoeBidenException If the event format or date format is invalid.
+     */
     public static Event parseEvent(String arguments)
             throws JoeBidenException {
 
@@ -99,6 +132,13 @@ public class Parser {
             );
         }
     }
+    /**
+     * Parses and validates a task description.
+     *
+     * @param arguments Arguments containing the task description.
+     * @return Validated task description.
+     * @throws JoeBidenException If the description is empty.
+     */
     public static String parseDescription(String arguments)
             throws JoeBidenException {
 
@@ -110,7 +150,13 @@ public class Parser {
 
         return arguments;
     }
-
+    /**
+     * Parses deadline arguments and creates a Deadline.
+     *
+     * @param arguments Deadline description and due date.
+     * @return Deadline created from the arguments.
+     * @throws JoeBidenException If the deadline format or date format is invalid.
+     */
     public static Deadline parseDeadline(String arguments)
             throws JoeBidenException {
 
