@@ -1,24 +1,31 @@
 package joebiden;
 
-import exception.JoeBidenException;
-import parser.Parser;
-import storage.Storage;
-import task.Task;
-import task.TaskList;
-import task.Todo;
-import ui.Ui;
+import joebiden.exception.JoeBidenException;
+import joebiden.parser.Parser;
+import joebiden.storage.Storage;
+import joebiden.task.Task;
+import joebiden.task.TaskList;
+import joebiden.task.Todo;
+import joebiden.ui.Ui;
 
+/**
+ * Runs the JoeBiden chatbot and coordinates its components.
+ */
 public class JoeBiden {
 
     public static final String NAME = "Joe Biden";
 
-    static Ui ui = new Ui();
+    private static final Ui ui = new Ui();
 
-    static TaskList tasks;
+    private static TaskList tasks;
 
     private static final String LINE =
             "____________________________________________________________";
-
+    /**
+     * Starts the chatbot and processes user commands.
+     *
+     * @param args Command-line arguments.
+     */
     public static void main(String[] args) {
         try {
             tasks = new TaskList(Storage.loadList());
@@ -26,7 +33,7 @@ public class JoeBiden {
             ui.showMessage("ERROR! " + e.getMessage());
             tasks = new TaskList();
         }
-        System.out.println(getWelcomeBanner());
+        ui.showMessage(getWelcomeBanner());
         while (true) {
             try {
                 String input = ui.readInput();
@@ -121,28 +128,26 @@ public class JoeBiden {
                 }
             }catch (JoeBidenException e){
                 echo("ERROR! "+ e.getMessage());
-            }finally {
             }
-
 
         }
     }
 
-    public static void echo(String input) {
+    private static void echo(String input) {
         System.out.println(LINE);
         System.out.println(input);
         System.out.println(LINE);
     }
 
 
-    public static String getWelcomeBanner() {
+    private static String getWelcomeBanner() {
         return LINE + "\n"
                 + "Hello! I'm " + NAME + ".\n"
                 + "What can I do for you?\n"
                 + LINE;
     }
 
-    public static String getGoodbyeBanner() {
+    private static String getGoodbyeBanner() {
         return "Bye. Hope to see you again soon!\n"
                 + LINE;
     }
