@@ -26,6 +26,15 @@ public class TaskList {
         return list.get(number - 1);
     }
 
+    public String markTask(int number) throws JoeBidenException {
+        Task task = getTask(number);
+        return task.markDone();
+    }
+
+    public String unmarkTask(int number) throws JoeBidenException {
+        Task task = getTask(number);
+        return task.unmark();
+    }
     private void validateTaskNumber(int number) throws JoeBidenException {
         if (number < 1 || number > list.size()) {
             throw new JoeBidenException(
