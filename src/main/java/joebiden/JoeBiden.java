@@ -117,6 +117,11 @@ public class JoeBiden {
                         Storage.saveList(tasks.getList());
                         break;
                     }
+                    case "find": {
+                        String keyword = Parser.parseFindKeyword(arguments);
+                        ui.showMessage(tasks.findTasks(keyword));
+                        break;
+                    }
                     default:
                         throw new JoeBidenException(
                                 "Invalid input try again"
