@@ -1,3 +1,13 @@
+package joebiden;
+
+import exception.JoeBidenException;
+import parser.Parser;
+import storage.Storage;
+import task.Task;
+import task.TaskList;
+import task.Todo;
+import ui.Ui;
+
 public class JoeBiden {
 
     public static final String NAME = "Joe Biden";
