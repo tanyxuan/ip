@@ -1,4 +1,4 @@
-package ui;
+package joebiden.ui;
 
 import java.util.Scanner;
 /**

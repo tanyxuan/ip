@@ -8,11 +8,6 @@ import task.TaskList;
 import task.Todo;
 import ui.Ui;
 
-/**
- * Main class of the JoeBiden chatbot.
- * Handles the application flow and coordinates the UI, parser,
- * task list, and storage components.
- */
 public class JoeBiden {
 
     public static final String NAME = "Joe Biden";
@@ -130,7 +125,10 @@ public class JoeBiden {
                 }
             }catch (JoeBidenException e){
                 echo("ERROR! "+ e.getMessage());
+            }finally {
             }
+
+
         }
     }
     /**
