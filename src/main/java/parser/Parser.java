@@ -110,7 +110,23 @@ public class Parser {
 
         return arguments;
     }
+    /**
+     * Validates and returns the keyword used for finding tasks.
+     *
+     * @param arguments Keyword entered by the user.
+     * @return Validated search keyword.
+     * @throws JoeBidenException If the keyword is empty.
+     */
+    public static String parseFindKeyword(String arguments)
+            throws JoeBidenException {
+        if (arguments.isBlank()) {
+            throw new JoeBidenException(
+                    "Please specify a keyword to find."
+            );
+        }
 
+        return arguments;
+    }
     public static Deadline parseDeadline(String arguments)
             throws JoeBidenException {
 
