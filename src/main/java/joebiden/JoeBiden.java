@@ -8,6 +8,11 @@ import task.TaskList;
 import task.Todo;
 import ui.Ui;
 
+/**
+ * Main class of the JoeBiden chatbot.
+ * Handles the application flow and coordinates the UI, parser,
+ * task list, and storage components.
+ */
 public class JoeBiden {
 
     public static final String NAME = "Joe Biden";
@@ -18,7 +23,11 @@ public class JoeBiden {
 
     private static final String LINE =
             "____________________________________________________________";
-
+    /**
+     * Starts the chatbot and processes user commands until the user exits.
+     *
+     * @param args Command-line arguments.
+     */
     public static void main(String[] args) {
         try {
             tasks = new TaskList(Storage.loadList());
@@ -121,27 +130,35 @@ public class JoeBiden {
                 }
             }catch (JoeBidenException e){
                 echo("ERROR! "+ e.getMessage());
-            }finally {
             }
-
-
         }
     }
-
+    /**
+     * Displays a message surrounded by separator lines.
+     *
+     * @param input Message to display.
+     */
     public static void echo(String input) {
         System.out.println(LINE);
         System.out.println(input);
         System.out.println(LINE);
     }
-
-
+    /**
+     * Returns the welcome message displayed when the chatbot starts.
+     *
+     * @return Welcome message.
+     */
     public static String getWelcomeBanner() {
         return LINE + "\n"
                 + "Hello! I'm " + NAME + ".\n"
                 + "What can I do for you?\n"
                 + LINE;
     }
-
+    /**
+     * Returns the goodbye message displayed when the chatbot exits.
+     *
+     * @return Goodbye message.
+     */
     public static String getGoodbyeBanner() {
         return "Bye. Hope to see you again soon!\n"
                 + LINE;
