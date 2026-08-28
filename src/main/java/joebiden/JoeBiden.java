@@ -1,12 +1,12 @@
 package joebiden;
 
-import exception.JoeBidenException;
-import parser.Parser;
-import storage.Storage;
-import task.Task;
-import task.TaskList;
-import task.Todo;
-import ui.Ui;
+import joebiden.exception.JoeBidenException;
+import joebiden.parser.Parser;
+import joebiden.storage.Storage;
+import joebiden.task.Task;
+import joebiden.task.TaskList;
+import joebiden.task.Todo;
+import joebiden.ui.Ui;
 
 public class JoeBiden {
 
