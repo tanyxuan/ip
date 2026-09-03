@@ -24,5 +24,4 @@ public class Ui {
         scanner.close();
     }
 
-
 }

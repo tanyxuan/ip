@@ -1,10 +1,5 @@
 package joebiden.storage;
 
-import joebiden.exception.JoeBidenException;
-import joebiden.task.Deadline;
-import joebiden.task.Task;
-import joebiden.task.Todo;
-import joebiden.task.Event;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -13,6 +8,16 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 
+import joebiden.exception.JoeBidenException;
+import joebiden.task.Deadline;
+import joebiden.task.Event;
+import joebiden.task.Task;
+import joebiden.task.Todo;
+
+
+/**
+ * Manages storing and reading data
+ */
 public class Storage {
 
     private static final Path FILE_PATH =
