@@ -53,17 +53,9 @@ test {
         showStandardStreams = false
     }
 }
-/*
-
-* application {
-    mainClass = 'joebiden.JoeBiden'
-}
-*/
-
-
 
 application {
-    mainClass.set("Launcher")
+    mainClass = 'joebiden.Launcher'
 }
 
 
