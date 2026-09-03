@@ -7,14 +7,16 @@ import joebiden.task.Task;
 import joebiden.task.TaskList;
 import joebiden.task.Todo;
 import joebiden.ui.Ui;
-
+/**
+ * Runs the Joe Biden chatbot.
+ */
 public class JoeBiden {
 
     public static final String NAME = "Joe Biden";
 
-    static Ui ui = new Ui();
+    private static Ui ui = new Ui();
 
-    static TaskList tasks;
+    private static TaskList tasks;
 
     private static final String LINE =
             "____________________________________________________________";
@@ -128,12 +130,9 @@ public class JoeBiden {
                         );
 
                 }
-            }catch (JoeBidenException e){
-                echo("ERROR! "+ e.getMessage());
-            }finally {
+            } catch (JoeBidenException e) {
+                echo("ERROR! " + e.getMessage());
             }
-
-
         }
     }
     /**
@@ -167,3 +166,4 @@ public class JoeBiden {
                 + LINE;
     }
 }
+

@@ -1,7 +1,9 @@
 package joebiden.task;
 
-import joebiden.exception.JoeBidenException;
 import java.util.ArrayList;
+
+import joebiden.exception.JoeBidenException;
+
 
 /**
  * Manages the collection of tasks in the chatbot.
@@ -132,5 +134,4 @@ public class TaskList {
 
         return output;
     }
-
 }

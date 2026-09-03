@@ -31,22 +31,12 @@ public class ParserTest {
     @Test
     public void parseDeadline_invalidDate_throwsException() {
 
-        assertThrows(
-                JoeBidenException.class,
-                () -> Parser.parseDeadline(
-                        "submit report /by abc"
-                )
-        );
+        assertThrows(JoeBidenException.class, () -> Parser.parseDeadline("submit report /by abc"));
     }
 
     @Test
     public void parseDeadline_missingBy_throwsException() {
 
-        assertThrows(
-                JoeBidenException.class,
-                () -> Parser.parseDeadline(
-                        "submit report"
-                )
-        );
+        assertThrows(JoeBidenException.class, () -> Parser.parseDeadline("submit report"));
     }
 }
