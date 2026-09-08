@@ -98,8 +98,7 @@ public class JoeBiden {
                     int number = Parser.getTaskNumber(arguments);
                     String response = tasks.markTask(number);
 
-                    Storage.saveList(tasks.getList());
-
+                    saveTasks();
                     return response;
                 }
 
@@ -107,17 +106,15 @@ public class JoeBiden {
                     int number = Parser.getTaskNumber(arguments);
                     String response = tasks.unmarkTask(number);
 
-                    Storage.saveList(tasks.getList());
-
+                    saveTasks();
                     return response;
                 }
 
                 case "delete": {
                     int number = Parser.getTaskNumber(arguments);
-
                     Task removedTask = tasks.deleteTask(number);
 
-                    Storage.saveList(tasks.getList());
+                    saveTasks();
 
                     return "Noted. I've removed this task:\n"
                             + removedTask
@@ -127,66 +124,21 @@ public class JoeBiden {
                 }
 
                 case "todo": {
-                    String description =
-                            Parser.parseDescription(arguments);
-
-                    Task task = new Todo(description);
-                    tasks.addTask(task);
-
-                    Storage.saveList(tasks.getList());
-
-                    return "Got it. I've added this task:\n"
-                            + task
-                            + "\nNow you have "
-                            + tasks.size()
-                            + " tasks in the list.";
+                    String description = Parser.parseDescription(arguments);
+                    return addTask(new Todo(description));
                 }
+                case "deadline":
+                    return addTask(Parser.parseDeadline(arguments));
 
-                case "deadline": {
-                    Task task = Parser.parseDeadline(arguments);
-
-                    tasks.addTask(task);
-
-                    Storage.saveList(tasks.getList());
-
-                    return "Got it. I've added this task:\n"
-                            + task
-                            + "\nNow you have "
-                            + tasks.size()
-                            + " tasks in the list.";
-                }
-
-                case "event": {
-                    Task task = Parser.parseEvent(arguments);
-
-                    tasks.addTask(task);
-
-                    Storage.saveList(tasks.getList());
-
-                    return "Got it. I've added this task:\n"
-                            + task
-                            + "\nNow you have "
-                            + tasks.size()
-                            + " tasks in the list.";
-                }
-
+                case "event":
+                    return addTask(Parser.parseEvent(arguments));
                 case "find": {
                     String keyword =
                             Parser.parseFindKeyword(arguments);
 
                     return tasks.findTasks(keyword);
                 }
-                case "reminders": {
-                    Parser.validateNoArguments(command, arguments);
 
-                    String reminders = tasks.getTomorrowReminders();
-
-                    if (reminders.isEmpty()) {
-                        return "You have no tasks or events tomorrow.";
-                    }
-
-                    return reminders;
-                }
                 default:
                     throw new JoeBidenException(
                             "Invalid input try again"
@@ -197,16 +149,6 @@ public class JoeBiden {
             return "ERROR! " + e.getMessage();
         }
     }
-
-    /**
-     * Displays a message surrounded by separator lines.
-     *
-     * @param input Message to display.
-     */
-    public static void echo(String input) {
-        System.out.println(input);
-    }
-
     /**
      * Returns the welcome message displayed when the chatbot starts.
      *
@@ -225,6 +167,32 @@ public class JoeBiden {
     public static String getGoodbyeBanner() {
         return "Bye. Hope to see you again soon!\n";
     }
+    /**
+     * Saves the current task list to storage.
+     *
+     * @throws JoeBidenException If the task list cannot be saved.
+     */
+    private void saveTasks() throws JoeBidenException {
+        Storage.saveList(tasks.getList());
+    }
+
+    /**
+     * Adds a task and returns the confirmation message.
+     *
+     * @param task Task to add.
+     * @return Confirmation message.
+     * @throws JoeBidenException If the task list cannot be saved.
+     */
+    private String addTask(Task task) throws JoeBidenException {
+        tasks.addTask(task);
+        saveTasks();
+
+        return "Got it. I've added this task:\n"
+                + task
+                + "\nNow you have "
+                + tasks.size()
+                + " tasks in the list.";
+    }
 
     /**
      * Returns reminders for tasks and events happening tomorrow.
@@ -234,5 +202,5 @@ public class JoeBiden {
     public String getTomorrowReminders() {
         return tasks.getTomorrowReminders();
     }
-
 }
+
