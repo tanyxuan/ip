@@ -32,6 +32,7 @@ public class TaskList {
      * @param task Task to add.
      */
     public void addTask(Task task) {
+        assert task != null : "Task to add should not be null";
         list.add(task);
     }
     /**
@@ -53,6 +54,8 @@ public class TaskList {
      * @throws JoeBidenException If the task number does not exist.
      */
     public Task getTask(int number) throws JoeBidenException {
+        assert number >= 1 && number <= list.size()
+                : "Validated task number should be within list bounds";
         validateTaskNumber(number);
         return list.get(number - 1);
     }

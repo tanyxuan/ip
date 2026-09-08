@@ -31,7 +31,7 @@ public class Storage {
      */
     public static void saveList(ArrayList<Task> list)
             throws JoeBidenException {
-
+        assert list != null : "Task list to save should not be null";
         try {
             Files.createDirectories(FILE_PATH.getParent());
 
