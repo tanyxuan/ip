@@ -167,7 +167,6 @@ public class JoeBiden {
     public static String getGoodbyeBanner() {
         return "Bye. Hope to see you again soon!\n";
     }
-
     /**
      * Saves the current task list to storage.
      *
@@ -176,6 +175,7 @@ public class JoeBiden {
     private void saveTasks() throws JoeBidenException {
         Storage.saveList(tasks.getList());
     }
+
     /**
      * Adds a task and returns the confirmation message.
      *
@@ -192,6 +192,15 @@ public class JoeBiden {
                 + "\nNow you have "
                 + tasks.size()
                 + " tasks in the list.";
+    }
+
+    /**
+     * Returns reminders for tasks and events happening tomorrow.
+     *
+     * @return Tomorrow's reminders.
+     */
+    public String getTomorrowReminders() {
+        return tasks.getTomorrowReminders();
     }
 }
 
