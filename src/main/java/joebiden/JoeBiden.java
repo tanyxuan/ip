@@ -176,7 +176,17 @@ public class JoeBiden {
 
                     return tasks.findTasks(keyword);
                 }
+                case "reminders": {
+                    Parser.validateNoArguments(command, arguments);
 
+                    String reminders = tasks.getTomorrowReminders();
+
+                    if (reminders.isEmpty()) {
+                        return "You have no tasks or events tomorrow.";
+                    }
+
+                    return reminders;
+                }
                 default:
                     throw new JoeBidenException(
                             "Invalid input try again"
@@ -215,4 +225,14 @@ public class JoeBiden {
     public static String getGoodbyeBanner() {
         return "Bye. Hope to see you again soon!\n";
     }
+
+    /**
+     * Returns reminders for tasks and events happening tomorrow.
+     *
+     * @return Tomorrow's reminders.
+     */
+    public String getTomorrowReminders() {
+        return tasks.getTomorrowReminders();
+    }
+
 }

@@ -70,6 +70,17 @@ public class MainWindow extends AnchorPane {
                         joeBidenImage
                 )
         );
+
+        String reminders = joeBiden.getTomorrowReminders();
+
+        if (!reminders.isEmpty()) {
+            dialogContainer.getChildren().add(
+                    DialogBox.getDukeDialog(
+                            reminders,
+                            joeBidenImage
+                    )
+            );
+        }
     }
 
     /**

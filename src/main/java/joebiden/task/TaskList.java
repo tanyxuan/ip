@@ -1,5 +1,6 @@
 package joebiden.task;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 
 import joebiden.exception.JoeBidenException;
@@ -136,5 +137,45 @@ public class TaskList {
         }
 
         return output;
+    }
+
+    /**
+     * Gets tasks that are coming up tomorrow.
+     *
+     * @return Tasks that are coming up tomorrow.
+     */
+    public String getTomorrowReminders() {
+        LocalDate tomorrow = LocalDate.now().plusDays(1);
+
+        StringBuilder reminders = new StringBuilder();
+
+        for (Task task : list) {
+            if (task.isDone()) {
+                continue;
+            }
+
+            if (task instanceof Deadline) {
+                Deadline deadline = (Deadline) task;
+
+                if (deadline.getBy().toLocalDate().equals(tomorrow)) {
+                    reminders.append(task).append("\n");
+                }
+            }
+
+            if (task instanceof Event) {
+                Event event = (Event) task;
+
+                if (event.getFrom().toLocalDate().equals(tomorrow)) {
+                    reminders.append(task).append("\n");
+                }
+            }
+        }
+
+        if (reminders.length() == 0) {
+            return "";
+        }
+
+        return "Hey! You have these tasks tomorrow:\n"
+                + reminders;
     }
 }
