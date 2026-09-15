@@ -65,7 +65,7 @@ public class MainWindow extends AnchorPane {
         this.joeBiden = joeBiden;
 
         dialogContainer.getChildren().add(
-                DialogBox.getDukeDialog(
+                DialogBox.getJoeBidenDialog(
                         JoeBiden.getWelcomeBanner(),
                         joeBidenImage
                 )
@@ -75,7 +75,7 @@ public class MainWindow extends AnchorPane {
 
         if (!reminders.isEmpty()) {
             dialogContainer.getChildren().add(
-                    DialogBox.getDukeDialog(
+                    DialogBox.getJoeBidenDialog(
                             reminders,
                             joeBidenImage
                     )
@@ -99,7 +99,7 @@ public class MainWindow extends AnchorPane {
                     joeBidenImage
             );
         } else {
-            responseDialog = DialogBox.getDukeDialog(
+            responseDialog = DialogBox.getJoeBidenDialog(
                     response,
                     joeBidenImage
             );

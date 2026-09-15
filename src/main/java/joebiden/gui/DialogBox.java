@@ -91,7 +91,7 @@ public class DialogBox extends HBox {
      * @param image Joe Biden's profile image.
      * @return Joe Biden dialog box.
      */
-    public static DialogBox getDukeDialog(String text, Image image) {
+    public static DialogBox getJoeBidenDialog(String text, Image image) {
         DialogBox dialogBox = new DialogBox(text, image);
         dialogBox.dialog.setMaxWidth(300.0);
         dialogBox.flip();
