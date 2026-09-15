@@ -5,19 +5,20 @@ import java.util.ArrayList;
 
 import joebiden.exception.JoeBidenException;
 
-
 /**
  * Manages the collection of tasks in the chatbot.
  */
 public class TaskList {
 
     private final ArrayList<Task> list;
+
     /**
      * Creates an empty task list.
      */
     public TaskList() {
         list = new ArrayList<>();
     }
+
     /**
      * Creates a task list containing the given tasks.
      *
@@ -26,6 +27,7 @@ public class TaskList {
     public TaskList(ArrayList<Task> tasks) {
         list = tasks;
     }
+
     /**
      * Adds a task to the list.
      *
@@ -35,6 +37,7 @@ public class TaskList {
         assert task != null : "Task to add should not be null";
         list.add(task);
     }
+
     /**
      * Deletes the task with the given task number.
      *
@@ -46,6 +49,7 @@ public class TaskList {
         validateTaskNumber(number);
         return list.remove(number - 1);
     }
+
     /**
      * Returns the task with the given task number.
      *
@@ -54,11 +58,14 @@ public class TaskList {
      * @throws JoeBidenException If the task number does not exist.
      */
     public Task getTask(int number) throws JoeBidenException {
+        validateTaskNumber(number);
+
         assert number >= 1 && number <= list.size()
                 : "Validated task number should be within list bounds";
-        validateTaskNumber(number);
+
         return list.get(number - 1);
     }
+
     /**
      * Marks the specified task as completed.
      *
@@ -70,6 +77,7 @@ public class TaskList {
         Task task = getTask(number);
         return task.markDone();
     }
+
     /**
      * Marks the specified task as not completed.
      *
@@ -81,13 +89,7 @@ public class TaskList {
         Task task = getTask(number);
         return task.unmark();
     }
-    private void validateTaskNumber(int number) throws JoeBidenException {
-        if (number < 1 || number > list.size()) {
-            throw new JoeBidenException(
-                    "That task number does not exist."
-            );
-        }
-    }
+
     /**
      * Returns the number of tasks in the list.
      *
@@ -96,20 +98,27 @@ public class TaskList {
     public int size() {
         return list.size();
     }
+
     /**
      * Returns a formatted representation of all tasks in the list.
      *
      * @return Formatted task list.
      */
     public String listTasks() {
-        String output = "Here are the tasks in your list:\n";
+        StringBuilder output = new StringBuilder(
+                "Here are the tasks in your list:\n"
+        );
 
         for (int i = 0; i < list.size(); i++) {
-            output += (i + 1) + ". " + list.get(i) + "\n";
+            output.append(i + 1)
+                    .append(". ")
+                    .append(list.get(i))
+                    .append("\n");
         }
 
-        return output;
+        return output.toString();
     }
+
     /**
      * Returns the underlying list of tasks.
      *
@@ -126,27 +135,33 @@ public class TaskList {
      * @return Formatted list of matching tasks.
      */
     public String findTasks(String keyword) {
-        String output = "Here are the matching tasks in your list:\n";
+        StringBuilder output = new StringBuilder(
+                "Here are the matching tasks in your list:\n"
+        );
+
+        String lowerKeyword = keyword.toLowerCase();
         int count = 1;
 
         for (Task task : list) {
-            if (task.getName().toLowerCase().contains(keyword.toLowerCase())) {
-                output += count + ". " + task + "\n";
+            if (task.getName().toLowerCase().contains(lowerKeyword)) {
+                output.append(count)
+                        .append(". ")
+                        .append(task)
+                        .append("\n");
                 count++;
             }
         }
 
-        return output;
+        return output.toString();
     }
 
     /**
-     * Gets tasks that are coming up tomorrow.
+     * Gets unfinished tasks and events that are due tomorrow.
      *
-     * @return Tasks that are coming up tomorrow.
+     * @return Formatted reminders for tomorrow, or an empty string if none exist.
      */
     public String getTomorrowReminders() {
         LocalDate tomorrow = LocalDate.now().plusDays(1);
-
         StringBuilder reminders = new StringBuilder();
 
         for (Task task : list) {
@@ -160,9 +175,7 @@ public class TaskList {
                 if (deadline.getBy().toLocalDate().equals(tomorrow)) {
                     reminders.append(task).append("\n");
                 }
-            }
-
-            if (task instanceof Event) {
+            } else if (task instanceof Event) {
                 Event event = (Event) task;
 
                 if (event.getFrom().toLocalDate().equals(tomorrow)) {
@@ -177,5 +190,19 @@ public class TaskList {
 
         return "Hey! You have these tasks tomorrow:\n"
                 + reminders;
+    }
+
+    /**
+     * Validates that the specified task number exists.
+     *
+     * @param number Task number to validate.
+     * @throws JoeBidenException If the task number does not exist.
+     */
+    private void validateTaskNumber(int number) throws JoeBidenException {
+        if (number < 1 || number > list.size()) {
+            throw new JoeBidenException(
+                    "That task number does not exist."
+            );
+        }
     }
 }
