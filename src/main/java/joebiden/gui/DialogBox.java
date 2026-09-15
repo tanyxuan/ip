@@ -50,7 +50,7 @@ public class DialogBox extends HBox {
         displayPicture.setImage(image);
 
         dialog.getStyleClass().add("user-label");
-        setAlignment(Pos.TOP_RIGHT);
+        setAlignment(Pos.CENTER_RIGHT);
     }
 
     /**
@@ -64,10 +64,11 @@ public class DialogBox extends HBox {
         Collections.reverse(temp);
         getChildren().setAll(temp);
 
-        setAlignment(Pos.TOP_LEFT);
+        setAlignment(Pos.CENTER_LEFT);
 
         dialog.getStyleClass().remove("user-label");
         dialog.getStyleClass().add("reply-label");
+
     }
 
     /**
@@ -78,7 +79,9 @@ public class DialogBox extends HBox {
      * @return User dialog box.
      */
     public static DialogBox getUserDialog(String text, Image image) {
-        return new DialogBox(text, image);
+        DialogBox dialogBox = new DialogBox(text, image);
+        dialogBox.dialog.setMaxWidth(180.0);
+        return dialogBox;
     }
 
     /**
@@ -90,7 +93,27 @@ public class DialogBox extends HBox {
      */
     public static DialogBox getDukeDialog(String text, Image image) {
         DialogBox dialogBox = new DialogBox(text, image);
+        dialogBox.dialog.setMaxWidth(300.0);
         dialogBox.flip();
+        return dialogBox;
+    }
+
+    /**
+     * Creates an error dialog box for Joe Biden.
+     *
+     * @param text Error message.
+     * @param image Joe Biden's profile image.
+     * @return Error dialog box.
+     */
+    public static DialogBox getErrorDialog(String text, Image image) {
+        DialogBox dialogBox = new DialogBox(text, image);
+
+        dialogBox.dialog.setMaxWidth(300.0);
+        dialogBox.flip();
+
+        dialogBox.dialog.getStyleClass().remove("reply-label");
+        dialogBox.dialog.getStyleClass().add("error-label");
+
         return dialogBox;
     }
 }
